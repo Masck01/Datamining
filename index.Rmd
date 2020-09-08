@@ -7,8 +7,8 @@ output:
     df_print: paged
     toc: yes
 ---
-# **Overview**
-## *Carga de librerias* 
+# **1.Overview**
+## *1.1.Carga de librerias* 
 
 Antes de realizar cualquier operación sobre el dataset, nos aseguramos de obtener todas las librerias necesarias para el desarrollo del proyecto.
 ```{r Overview , collapse=TRUE}
@@ -29,33 +29,54 @@ library(PerformanceAnalytics)
 # Quitar la notacion cientifica
 options(scipen = 999)
 ```
-# Quitar la notacion cientifica
-options(scipen = 999)
 
-## *Carga de dataset*
+## *1.2.Carga de dataset*
 ```{r dataset}
-data <- read.csv('avocado.csv')
+avocado <- read.csv('avocado.csv')
 
-data
+avocado
 ```
 
-# **Entendiendo los datos**
+# **2.Entendiendo los datos**
 Observamos una introducción de la estructura con la cual vamos a trabajar.
 
-## *Estructura*
+## *2.1.Estructura*
 ```{r Structure}
-str(data)
+str(avocado)
 ```
-Contamos con un size de 18249 y 14 dimensiones 
-## *Resumen*
+Contamos con un size de 18249 y 14 dimensiones
+
+## *2.2.Resumen*
 Luego realizamos un resumen introductorio para una primera vista de los datos.
 ```{r Summary}
-summary(data)
+summary(avocado)
 ```
 
 
-Podemos observar que 'X' corresponde a un tipico 'id'. No es reelevante
+- Podemos observar que 'X' corresponde a un tipico 'id'. No es relevante
+- Date. Es un dato tipo 'aaaa/mm/dd' el cual podria ser de utilidad para determinar el AveragePrice.
+- AveragePrice. Aparenta tener una distribución normal, esto se verificara mas adelante.
+- X4046, X4225, X4770
+- Total.bags. Necesita una vista mas profunda para entender este campo.
+- Small.Bags. Large.Bags. XLarge.Bags.
+- type.
+- year
+- region
 
-Date. Es un dato tipo 'aaaa/mm/dd' el cual podria ser de utilidad para determinar el AveragePrice.
+# **3.Analisis Exploratorio**
 
-AveragePrice 
+## *3.1.Diagramas de dispersion*
+
+```{r Diagramas de dispersion averagePrice}
+for (x in c(2:length(avocado))) {
+  if(!is.factor(avocado[,colnames(avocado)[x]]) && x!=3){
+        print(ggplot(data=avocado) + geom_point(aes_string(colnames(avocado)[3],colnames(avocado)[x])) + ggtitle(paste("Diagrama dispersion",colnames(avocado)[3],colnames(avocado)[x])))
+    }
+}
+
+```
+
+### 3.1.1.Sinopsis
+- *AveragePrice-Total.Volume:* En este grafico se muestra el precio con relacion al volumen, se puede observar que no tienen una relación directa. Cabe mencionar que el precio no esta condicionado por el volumen, lo mismo sucede con X4046, X4225, X4770. 
+- *AveragePrice-Total.Bags:* El numero total de cajas es independiente del precio, Total.Bags es un sumatoria de Small.Bags,Large.Bags,XLarge.Bags.
+- *AveragePrice-year:* En cuanto al año, podemos ver cierto comportamiento, en el periodo 2016, 2017 se logro superar el monto de 3, mientras que en los otros años fue menor a este valor.
