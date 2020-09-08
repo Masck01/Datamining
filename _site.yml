@@ -1,0 +1,18 @@
+name: "Final Datamining"
+navbar:
+  title: "Analisis de Palta"
+  left:
+    - text: "home"
+      href: index.html
+    - text: "alumno"
+      href: alumno.html
+output:
+  html_document:
+      theme: cosmo
+      highlight: textmate
+      df_print: paged
+      fig:height: 4
+      fig:width: 6
+      toc: yes
+      toc_float: yes
+      code_folding: hide

@@ -1,0 +1,10 @@
+---
+title: "Acerca del trabajo final"
+---
+
+### Este sitio fue creado por el Alumno Quipildor Ivan Jorge Luis.
+### Legajo 39702.
+### Dni 36282554.
+### Asignatura Inteligencia Empresarial y Datamining.
+### Profesor Pedro Araujo
+

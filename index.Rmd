@@ -1,0 +1,61 @@
+---
+title: "Analisis de Palta"
+author: "Quipildor Ivan Jorge Luis"
+date: "08/09/2020"
+output:
+  html_document:
+    df_print: paged
+    toc: yes
+---
+# **Overview**
+## *Carga de librerias* 
+
+Antes de realizar cualquier operación sobre el dataset, nos aseguramos de obtener todas las librerias necesarias para el desarrollo del proyecto.
+```{r Overview , collapse=TRUE}
+
+library(caret)
+library(markdown)
+library(knitr)
+library(fastDummies)
+library(lubridate)
+library(ggplot2)
+library(corrplot)
+library(dplyr)
+library(psych)
+library(GGally)
+library(mosaic)
+library(PerformanceAnalytics)
+
+# Quitar la notacion cientifica
+options(scipen = 999)
+```
+# Quitar la notacion cientifica
+options(scipen = 999)
+
+## *Carga de dataset*
+```{r dataset}
+data <- read.csv('avocado.csv')
+
+data
+```
+
+# **Entendiendo los datos**
+Observamos una introducción de la estructura con la cual vamos a trabajar.
+
+## *Estructura*
+```{r Structure}
+str(data)
+```
+Contamos con un size de 18249 y 14 dimensiones 
+## *Resumen*
+Luego realizamos un resumen introductorio para una primera vista de los datos.
+```{r Summary}
+summary(data)
+```
+
+
+Podemos observar que 'X' corresponde a un tipico 'id'. No es reelevante
+
+Date. Es un dato tipo 'aaaa/mm/dd' el cual podria ser de utilidad para determinar el AveragePrice.
+
+AveragePrice 
