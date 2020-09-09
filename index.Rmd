@@ -68,15 +68,60 @@ summary(avocado)
 ## *3.1.Diagramas de dispersion*
 
 ```{r Diagramas de dispersion averagePrice}
-for (x in c(2:length(avocado))) {
-  if(!is.factor(avocado[,colnames(avocado)[x]]) && x!=3){
-        print(ggplot(data=avocado) + geom_point(aes_string(colnames(avocado)[3],colnames(avocado)[x])) + ggtitle(paste("Diagrama dispersion",colnames(avocado)[3],colnames(avocado)[x])))
-    }
-}
+
+
+avocado %>% group_by(region) %>%  ggplot(aes(year,AveragePrice))+ geom_jitter()
+
+avocado %>% group_by(region) %>%  ggplot(aes(Date,AveragePrice))+ geom_jitter()
+
+avocado %>% group_by(region) %>%  ggplot(aes(region,AveragePrice))+ geom_jitter()
+
+avocado %>% group_by(region) %>%  ggplot(aes(type,AveragePrice))+ geom_jitter()
 
 ```
 
-### 3.1.1.Sinopsis
-- *AveragePrice-Total.Volume:* En este grafico se muestra el precio con relacion al volumen, se puede observar que no tienen una relación directa. Cabe mencionar que el precio no esta condicionado por el volumen, lo mismo sucede con X4046, X4225, X4770. 
-- *AveragePrice-Total.Bags:* El numero total de cajas es independiente del precio, Total.Bags es un sumatoria de Small.Bags,Large.Bags,XLarge.Bags.
-- *AveragePrice-year:* En cuanto al año, podemos ver cierto comportamiento, en el periodo 2016, 2017 se logro superar el monto de 3, mientras que en los otros años fue menor a este valor.
+- *AveragePrice-year:* Podemos observar cierto comportamiento, en el periodo 2016, 2017, se logro superar el monto de 3, mientras que en los otros años fue menor a este valor.
+- *AveragePrice-Date:* Denotamos como el precio tiene un comportamiento variable con respecto al atributo Date.
+- *AveragePrice-region:* Asi como en Date, vemos como el precio varia con respecto a las regiones. 
+- *AveragePrice-type:* Sin embargo encontramos que los precios mas altos corresponden a las Paltas tipo organicas. 
+
+## *3.2.Boxplots* 
+```{r Boxplot de averagePrice}
+
+avocado %>% ggplot(aes(year,AveragePrice,group=year))+ geom_boxplot()
+
+avocado %>%  ggplot(aes(type,AveragePrice,group=type))+ geom_boxplot()
+
+```
+
+- No se presentan outliers que puedan afectar al modelo final.
+- Ademas el precio decae en los ultimos años.
+
+## *3.3.PieChart*
+```{r PieChart}
+
+pie(summary(as.factor(avocado$region)))
+pie(summary(as.factor(avocado$type)))
+```
+
+- En este grafico visualizamos como todas las ciudades aportan practicamente la mismca cantidad de Palta.
+- Solo existen de dos tipos conventional y organic.
+
+
+## *3.4.Barplots*
+```{r Barplot}
+
+avocado %>% ggplot(aes(x=year,y=AveragePrice,fill=year)) + geom_bar(stat="identity") + theme_void()
+```
+
+- En el barplot se verifica que en el periodo 2018 se obtuvieron los precios mas bajos.
+
+# **4.Preparacion de los datos**
+## *4.1.Revision de no nulos y/o faltantes*
+```{r no nulos}
+
+data.frame( sapply(avocado, function(x) sum(is.na(x))))
+data.frame( sapply(avocado, function(x) sum(is.nan(x))))
+```
+
+- No se encontraron datos nulos o faltantes que puedan afectar al modelo final.

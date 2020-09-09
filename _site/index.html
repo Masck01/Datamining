@@ -597,20 +597,71 @@ avocado</code></pre>
 <h1><strong>3.Analisis Exploratorio</strong></h1>
 <div id="diagramas-de-dispersion" class="section level2">
 <h2><em>3.1.Diagramas de dispersion</em></h2>
-<pre class="r"><code>for (x in c(2:length(avocado))) {
-  if(!is.factor(avocado[,colnames(avocado)[x]]) &amp;&amp; x!=3){
-        print(ggplot(data=avocado) + geom_point(aes_string(colnames(avocado)[3],colnames(avocado)[x])) + ggtitle(paste(&quot;Diagrama dispersion&quot;,colnames(avocado)[3],colnames(avocado)[x])))
-    }
-}</code></pre>
-<p><img src="index_files/figure-html/Diagramas%20de%20dispersion%20averagePrice-1.png" width="672" /><img src="index_files/figure-html/Diagramas%20de%20dispersion%20averagePrice-2.png" width="672" /><img src="index_files/figure-html/Diagramas%20de%20dispersion%20averagePrice-3.png" width="672" /><img src="index_files/figure-html/Diagramas%20de%20dispersion%20averagePrice-4.png" width="672" /><img src="index_files/figure-html/Diagramas%20de%20dispersion%20averagePrice-5.png" width="672" /><img src="index_files/figure-html/Diagramas%20de%20dispersion%20averagePrice-6.png" width="672" /><img src="index_files/figure-html/Diagramas%20de%20dispersion%20averagePrice-7.png" width="672" /><img src="index_files/figure-html/Diagramas%20de%20dispersion%20averagePrice-8.png" width="672" /><img src="index_files/figure-html/Diagramas%20de%20dispersion%20averagePrice-9.png" width="672" /></p>
-<div id="sinopsis" class="section level3">
-<h3>3.1.1.Sinopsis</h3>
+<pre class="r"><code>avocado %&gt;% group_by(region) %&gt;%  ggplot(aes(year,AveragePrice))+ geom_jitter()</code></pre>
+<p><img src="index_files/figure-html/Diagramas%20de%20dispersion%20averagePrice-1.png" width="672" /></p>
+<pre class="r"><code>avocado %&gt;% group_by(region) %&gt;%  ggplot(aes(Date,AveragePrice))+ geom_jitter()</code></pre>
+<p><img src="index_files/figure-html/Diagramas%20de%20dispersion%20averagePrice-2.png" width="672" /></p>
+<pre class="r"><code>avocado %&gt;% group_by(region) %&gt;%  ggplot(aes(region,AveragePrice))+ geom_jitter()</code></pre>
+<p><img src="index_files/figure-html/Diagramas%20de%20dispersion%20averagePrice-3.png" width="672" /></p>
+<pre class="r"><code>avocado %&gt;% group_by(region) %&gt;%  ggplot(aes(type,AveragePrice))+ geom_jitter()</code></pre>
+<p><img src="index_files/figure-html/Diagramas%20de%20dispersion%20averagePrice-4.png" width="672" /></p>
 <ul>
-<li><em>AveragePrice-Total.Volume:</em> En este grafico se muestra el precio con relacion al volumen, se puede observar que no tienen una relación directa. Cabe mencionar que el precio no esta condicionado por el volumen, lo mismo sucede con X4046, X4225, X4770.</li>
-<li><em>AveragePrice-Total.Bags:</em> El numero total de cajas es independiente del precio, Total.Bags es un sumatoria de Small.Bags,Large.Bags,XLarge.Bags.</li>
-<li><em>AveragePrice-year:</em> En cuanto al año, podemos ver cierto comportamiento, en el periodo 2016, 2017 se logro superar el monto de 3, mientras que en los otros años fue menor a este valor.</li>
+<li><em>AveragePrice-year:</em> Podemos observar cierto comportamiento, en el periodo 2016, 2017, se logro superar el monto de 3, mientras que en los otros años fue menor a este valor.</li>
+<li><em>AveragePrice-Date:</em> Denotamos como el precio tiene un comportamiento variable con respecto al atributo Date.</li>
+<li><em>AveragePrice-region:</em> Asi como en Date, vemos como el precio varia con respecto a las regiones.</li>
+<li><em>AveragePrice-type:</em> Sin embargo encontramos que los precios mas altos corresponden a las Paltas tipo organicas.</li>
 </ul>
 </div>
+<div id="boxplots" class="section level2">
+<h2><em>3.2.Boxplots</em></h2>
+<pre class="r"><code>avocado %&gt;% ggplot(aes(year,AveragePrice,group=year))+ geom_boxplot()</code></pre>
+<p><img src="index_files/figure-html/Boxplot%20de%20averagePrice-1.png" width="672" /></p>
+<pre class="r"><code>avocado %&gt;%  ggplot(aes(type,AveragePrice,group=type))+ geom_boxplot()</code></pre>
+<p><img src="index_files/figure-html/Boxplot%20de%20averagePrice-2.png" width="672" /></p>
+<ul>
+<li>No se presentan outliers que puedan afectar al modelo final.</li>
+<li>Ademas el precio decae en los ultimos años.</li>
+</ul>
+</div>
+<div id="piechart" class="section level2">
+<h2><em>3.3.PieChart</em></h2>
+<pre class="r"><code>pie(summary(as.factor(avocado$region)))</code></pre>
+<p><img src="index_files/figure-html/PieChart-1.png" width="672" /></p>
+<pre class="r"><code>pie(summary(as.factor(avocado$type)))</code></pre>
+<p><img src="index_files/figure-html/PieChart-2.png" width="672" /></p>
+<ul>
+<li>En este grafico visualizamos como todas las ciudades aportan practicamente la mismca cantidad de Palta.</li>
+<li>Solo existen de dos tipos conventional y organic.</li>
+</ul>
+</div>
+<div id="barplots" class="section level2">
+<h2><em>3.4.Barplots</em></h2>
+<pre class="r"><code>avocado %&gt;% ggplot(aes(x=year,y=AveragePrice,fill=year)) + geom_bar(stat=&quot;identity&quot;) + theme_void()</code></pre>
+<p><img src="index_files/figure-html/Barplot-1.png" width="672" /></p>
+<ul>
+<li>En el barplot se verifica que en el periodo 2018 se obtuvieron los precios mas bajos.</li>
+</ul>
+</div>
+</div>
+<div id="preparacion-de-los-datos" class="section level1">
+<h1><strong>4.Preparacion de los datos</strong></h1>
+<div id="revision-de-no-nulos-yo-faltantes" class="section level2">
+<h2><em>4.1.Revision de no nulos y/o faltantes</em></h2>
+<pre class="r"><code>data.frame( sapply(avocado, function(x) sum(is.na(x))))</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["sapply.avocado..function.x..sum.is.na.x..."],"name":[1],"type":["int"],"align":["right"]}],"data":[{"1":"0","_rn_":"X"},{"1":"0","_rn_":"Date"},{"1":"0","_rn_":"AveragePrice"},{"1":"0","_rn_":"Total.Volume"},{"1":"0","_rn_":"X4046"},{"1":"0","_rn_":"X4225"},{"1":"0","_rn_":"X4770"},{"1":"0","_rn_":"Total.Bags"},{"1":"0","_rn_":"Small.Bags"},{"1":"0","_rn_":"Large.Bags"},{"1":"0","_rn_":"XLarge.Bags"},{"1":"0","_rn_":"type"},{"1":"0","_rn_":"year"},{"1":"0","_rn_":"region"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<pre class="r"><code>data.frame( sapply(avocado, function(x) sum(is.nan(x))))</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["sapply.avocado..function.x..sum.is.nan.x..."],"name":[1],"type":["int"],"align":["right"]}],"data":[{"1":"0","_rn_":"X"},{"1":"0","_rn_":"Date"},{"1":"0","_rn_":"AveragePrice"},{"1":"0","_rn_":"Total.Volume"},{"1":"0","_rn_":"X4046"},{"1":"0","_rn_":"X4225"},{"1":"0","_rn_":"X4770"},{"1":"0","_rn_":"Total.Bags"},{"1":"0","_rn_":"Small.Bags"},{"1":"0","_rn_":"Large.Bags"},{"1":"0","_rn_":"XLarge.Bags"},{"1":"0","_rn_":"type"},{"1":"0","_rn_":"year"},{"1":"0","_rn_":"region"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<ul>
+<li>No se encontraron datos nulos o faltantes que puedan afectar al modelo final.</li>
+</ul>
 </div>
 </div>
 
